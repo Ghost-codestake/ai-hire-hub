@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Menu, X } from "lucide-react";
 
@@ -24,8 +25,8 @@ const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm">Log In</Button>
-          <Button size="sm" className="rounded-lg">Get Started</Button>
+          <Button variant="ghost" size="sm" asChild><Link to="/auth">Log In</Link></Button>
+          <Button size="sm" className="rounded-lg" asChild><Link to="/auth">Get Started</Link></Button>
         </div>
 
         {/* Mobile toggle */}
@@ -42,8 +43,8 @@ const Navbar = () => {
           <a href="#testimonials" className="block text-sm text-muted-foreground" onClick={() => setMobileOpen(false)}>Testimonials</a>
           <a href="#faq" className="block text-sm text-muted-foreground" onClick={() => setMobileOpen(false)}>FAQ</a>
           <div className="pt-4 flex flex-col gap-2">
-            <Button variant="ghost" size="sm">Log In</Button>
-            <Button size="sm">Get Started</Button>
+            <Button variant="ghost" size="sm" asChild><Link to="/auth">Log In</Link></Button>
+            <Button size="sm" asChild><Link to="/auth">Get Started</Link></Button>
           </div>
         </div>
       )}
