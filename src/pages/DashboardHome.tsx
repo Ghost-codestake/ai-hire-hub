@@ -3,6 +3,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import StatsCards from "@/components/dashboard/StatsCards";
 import HiringPipelineChart from "@/components/dashboard/HiringPipelineChart";
+import RecentActivity from "@/components/dashboard/RecentActivity";
+import TrendingJobs from "@/components/dashboard/TrendingJobs";
 
 const DashboardHome = () => {
   const { user } = useAuth();
@@ -37,6 +39,11 @@ const DashboardHome = () => {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <HiringPipelineChart />
+        <RecentActivity jobs={jobs} />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <TrendingJobs jobs={jobs} />
       </div>
     </div>
   );
