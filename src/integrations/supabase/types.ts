@@ -14,6 +14,90 @@ export type Database = {
   }
   public: {
     Tables: {
+      applications: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          created_by: string
+          id: string
+          job_id: string
+          notes: string | null
+          stage: Database["public"]["Enums"]["application_stage"]
+          updated_at: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          created_by: string
+          id?: string
+          job_id: string
+          notes?: string | null
+          stage?: Database["public"]["Enums"]["application_stage"]
+          updated_at?: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          job_id?: string
+          notes?: string | null
+          stage?: Database["public"]["Enums"]["application_stage"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "applications_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: false
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "applications_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      candidates: {
+        Row: {
+          created_at: string
+          created_by: string
+          email: string
+          id: string
+          name: string
+          notes: string | null
+          phone: string | null
+          resume_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by: string
+          email: string
+          id?: string
+          name: string
+          notes?: string | null
+          phone?: string | null
+          resume_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string
+          email?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          resume_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       jobs: {
         Row: {
           created_at: string
@@ -116,6 +200,12 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "recruiter"
+      application_stage:
+        | "applied"
+        | "shortlisted"
+        | "interview"
+        | "hired"
+        | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -244,6 +334,13 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "recruiter"],
+      application_stage: [
+        "applied",
+        "shortlisted",
+        "interview",
+        "hired",
+        "rejected",
+      ],
     },
   },
 } as const

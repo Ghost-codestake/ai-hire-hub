@@ -21,6 +21,20 @@ const DashboardHome = () => {
     },
   });
 
+  const { data: applications = [] } = useQuery({
+    queryKey: ["applications-all"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("applications")
+        .select("*");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const shortlisted = applications.filter((a) => a.stage === "shortlisted").length;
+  const hired = applications.filter((a) => a.stage === "hired").length;
+
   return (
     <div className="space-y-6">
       <div>
@@ -32,9 +46,9 @@ const DashboardHome = () => {
 
       <StatsCards
         totalJobs={jobs.length}
-        totalApplicants={0}
-        shortlisted={0}
-        hired={0}
+        totalApplicants={applications.length}
+        shortlisted={shortlisted}
+        hired={hired}
       />
 
       <div className="grid gap-4 lg:grid-cols-3">
