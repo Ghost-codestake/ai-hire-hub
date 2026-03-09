@@ -1,1 +1,7 @@
 project_id = "koayzufijgfjpuqtsdaf"
+
+[functions.analyze-resume]
+verify_jwt = false
+
+[functions.score-candidate]
+verify_jwt = false

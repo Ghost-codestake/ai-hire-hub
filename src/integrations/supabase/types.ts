@@ -14,6 +14,53 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_scores: {
+        Row: {
+          application_id: string
+          created_at: string
+          created_by: string
+          id: string
+          interview_questions: Json | null
+          match_score: number | null
+          recommendation: string | null
+          skill_gaps: string[] | null
+          strengths: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          created_by: string
+          id?: string
+          interview_questions?: Json | null
+          match_score?: number | null
+          recommendation?: string | null
+          skill_gaps?: string[] | null
+          strengths?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          interview_questions?: Json | null
+          match_score?: number | null
+          recommendation?: string | null
+          skill_gaps?: string[] | null
+          strengths?: string[] | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_scores_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: true
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       applications: {
         Row: {
           candidate_id: string
@@ -166,6 +213,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      resume_data: {
+        Row: {
+          candidate_id: string
+          created_at: string
+          created_by: string
+          education: Json | null
+          experience: Json | null
+          id: string
+          skills: string[] | null
+          summary: string | null
+          updated_at: string
+        }
+        Insert: {
+          candidate_id: string
+          created_at?: string
+          created_by: string
+          education?: Json | null
+          experience?: Json | null
+          id?: string
+          skills?: string[] | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Update: {
+          candidate_id?: string
+          created_at?: string
+          created_by?: string
+          education?: Json | null
+          experience?: Json | null
+          id?: string
+          skills?: string[] | null
+          summary?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resume_data_candidate_id_fkey"
+            columns: ["candidate_id"]
+            isOneToOne: true
+            referencedRelation: "candidates"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
