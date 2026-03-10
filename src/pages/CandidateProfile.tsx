@@ -16,6 +16,7 @@ import { useState } from "react";
 import ApplicationPipeline from "@/components/candidates/ApplicationPipeline";
 import ResumeDataCard from "@/components/candidates/ResumeDataCard";
 import AIScoreCard from "@/components/candidates/AIScoreCard";
+import { extractTextFromUrl } from "@/lib/pdfExtract";
 
 const CandidateProfile = () => {
   const { id } = useParams<{ id: string }>();
