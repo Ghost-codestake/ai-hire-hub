@@ -13,6 +13,7 @@ import Jobs from "./pages/Jobs";
 import Candidates from "./pages/Candidates";
 import SettingsPage from "./pages/SettingsPage";
 import CandidateProfile from "./pages/CandidateProfile";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const App = () => (
               <Route path="jobs" element={<Jobs />} />
               <Route path="candidates" element={<Candidates />} />
               <Route path="candidates/:id" element={<CandidateProfile />} />
+              <Route path="analytics" element={<Analytics />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
             <Route path="*" element={<NotFound />} />

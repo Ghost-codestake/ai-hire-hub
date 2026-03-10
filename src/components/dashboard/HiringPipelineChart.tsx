@@ -1,15 +1,26 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
-
-const data = [
-  { stage: "Applied", count: 120 },
-  { stage: "Screened", count: 85 },
-  { stage: "Interview", count: 42 },
-  { stage: "Offer", count: 18 },
-  { stage: "Hired", count: 12 },
-];
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const HiringPipelineChart = () => {
+  const { data: applications = [] } = useQuery({
+    queryKey: ["applications-all"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("applications").select("*");
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const data = [
+    { stage: "Applied", count: applications.filter((a) => a.stage === "applied").length },
+    { stage: "Shortlisted", count: applications.filter((a) => a.stage === "shortlisted").length },
+    { stage: "Interview", count: applications.filter((a) => a.stage === "interview").length },
+    { stage: "Hired", count: applications.filter((a) => a.stage === "hired").length },
+    { stage: "Rejected", count: applications.filter((a) => a.stage === "rejected").length },
+  ];
+
   return (
     <Card className="col-span-full lg:col-span-2">
       <CardHeader>
