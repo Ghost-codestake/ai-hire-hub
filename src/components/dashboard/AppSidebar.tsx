@@ -21,6 +21,7 @@ const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Jobs", url: "/dashboard/jobs", icon: Briefcase },
   { title: "Candidates", url: "/dashboard/candidates", icon: Users },
+  { title: "Analytics", url: "/dashboard/analytics", icon: BarChart3 },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];
 
