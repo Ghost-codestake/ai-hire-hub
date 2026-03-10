@@ -13,6 +13,7 @@ import Jobs from "./pages/Jobs";
 import Candidates from "./pages/Candidates";
 import SettingsPage from "./pages/SettingsPage";
 import CandidateProfile from "./pages/CandidateProfile";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
