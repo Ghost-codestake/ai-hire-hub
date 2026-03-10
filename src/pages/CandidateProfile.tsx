@@ -16,6 +16,7 @@ import { useState } from "react";
 import ApplicationPipeline from "@/components/candidates/ApplicationPipeline";
 import ResumeDataCard from "@/components/candidates/ResumeDataCard";
 import AIScoreCard from "@/components/candidates/AIScoreCard";
+import { extractTextFromUrl } from "@/lib/pdfExtract";
 
 const CandidateProfile = () => {
   const { id } = useParams<{ id: string }>();
@@ -115,15 +116,22 @@ const CandidateProfile = () => {
     if (!candidate?.resume_url) return;
     setAnalyzingResume(true);
     try {
-      // Download resume to get text (for now, send the file path - the edge function would need text)
-      // In a real scenario you'd extract text from PDF. For demo, we send a placeholder.
-      const { data: signedUrl } = await supabase.storage.from("resumes").createSignedUrl(candidate.resume_url, 60);
-      
+      const { data: signedUrlData, error: urlError } = await supabase.storage
+        .from("resumes")
+        .createSignedUrl(candidate.resume_url, 120);
+      if (urlError || !signedUrlData?.signedUrl) throw new Error("Failed to get resume URL");
+
+      toast.info("Extracting text from PDF...");
+      const resumeText = await extractTextFromUrl(signedUrlData.signedUrl);
+
+      if (!resumeText.trim()) {
+        toast.error("Could not extract text from the PDF. It may be image-based.");
+        return;
+      }
+
+      toast.info("Analyzing resume with AI...");
       const { data, error } = await supabase.functions.invoke("analyze-resume", {
-        body: { 
-          candidate_id: id, 
-          resume_text: `Resume for ${candidate.name}. Email: ${candidate.email}. Phone: ${candidate.phone || 'N/A'}. Notes: ${candidate.notes || 'N/A'}. Resume file available at storage.` 
-        },
+        body: { candidate_id: id, resume_text: resumeText },
       });
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
