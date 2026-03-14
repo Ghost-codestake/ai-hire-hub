@@ -1,4 +1,4 @@
-import { LayoutDashboard, Briefcase, Users, Settings, LogOut, BarChart3 } from "lucide-react";
+import { LayoutDashboard, Briefcase, Users, Settings, LogOut, BarChart3, Columns3 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useAuth } from "@/contexts/AuthContext";
 import {
@@ -21,6 +21,7 @@ const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Jobs", url: "/dashboard/jobs", icon: Briefcase },
   { title: "Candidates", url: "/dashboard/candidates", icon: Users },
+  { title: "Pipeline", url: "/dashboard/pipeline", icon: Columns3 },
   { title: "Analytics", url: "/dashboard/analytics", icon: BarChart3 },
   { title: "Settings", url: "/dashboard/settings", icon: Settings },
 ];

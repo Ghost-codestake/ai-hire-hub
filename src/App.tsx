@@ -14,6 +14,7 @@ import Candidates from "./pages/Candidates";
 import SettingsPage from "./pages/SettingsPage";
 import CandidateProfile from "./pages/CandidateProfile";
 import Analytics from "./pages/Analytics";
+import Pipeline from "./pages/Pipeline";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +41,7 @@ const App = () => (
               <Route path="jobs" element={<Jobs />} />
               <Route path="candidates" element={<Candidates />} />
               <Route path="candidates/:id" element={<CandidateProfile />} />
+              <Route path="pipeline" element={<Pipeline />} />
               <Route path="analytics" element={<Analytics />} />
               <Route path="settings" element={<SettingsPage />} />
             </Route>
