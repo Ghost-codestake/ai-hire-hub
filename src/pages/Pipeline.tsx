@@ -1,12 +1,15 @@
+import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import KanbanBoard from "@/components/candidates/KanbanBoard";
 
 const Pipeline = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const [selectedJobId, setSelectedJobId] = useState("all");
 
   const { data: applications = [], isLoading } = useQuery({
     queryKey: ["pipeline-applications"],
@@ -28,6 +31,19 @@ const Pipeline = () => {
     },
   });
 
+  const jobs = useMemo(() => {
+    const map = new Map<string, string>();
+    applications.forEach((a) => {
+      if (a.job_id && !map.has(a.job_id)) map.set(a.job_id, a.job_title);
+    });
+    return Array.from(map, ([id, title]) => ({ id, title }));
+  }, [applications]);
+
+  const filtered = useMemo(
+    () => selectedJobId === "all" ? applications : applications.filter((a) => a.job_id === selectedJobId),
+    [applications, selectedJobId]
+  );
+
   const updateStage = useMutation({
     mutationFn: async ({ appId, stage }: { appId: string; stage: string }) => {
       const { error } = await supabase
@@ -45,11 +61,26 @@ const Pipeline = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold font-display">Pipeline</h1>
-        <p className="text-muted-foreground mt-1">
-          Drag and drop candidates between stages
-        </p>
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <div>
+          <h1 className="text-3xl font-bold font-display">Pipeline</h1>
+          <p className="text-muted-foreground mt-1">
+            Drag and drop candidates between stages
+          </p>
+        </div>
+        {jobs.length > 1 && (
+          <Select value={selectedJobId} onValueChange={setSelectedJobId}>
+            <SelectTrigger className="w-56">
+              <SelectValue placeholder="Filter by job" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Jobs</SelectItem>
+              {jobs.map((j) => (
+                <SelectItem key={j.id} value={j.id}>{j.title}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
       </div>
 
       {isLoading ? (
@@ -60,7 +91,7 @@ const Pipeline = () => {
         </div>
       ) : (
         <KanbanBoard
-          applications={applications}
+          applications={filtered}
           onStageChange={(appId, stage) => updateStage.mutate({ appId, stage })}
         />
       )}
