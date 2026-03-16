@@ -79,7 +79,18 @@ const TeamSettings = () => {
       });
 
       if (error) {
-        const message = data?.error || error.message || "Failed to add team member";
+        // For FunctionsHttpError, parse the response body for the real message
+        let message = "Failed to add team member";
+        try {
+          if (error.context && typeof error.context.json === "function") {
+            const body = await error.context.json();
+            message = body?.error || message;
+          } else {
+            message = error.message || message;
+          }
+        } catch {
+          message = error.message || message;
+        }
         toast({ title: "Error", description: message, variant: "destructive" });
       } else if (data?.error) {
         toast({ title: "Error", description: data.error, variant: "destructive" });
